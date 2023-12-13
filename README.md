@@ -1,2 +1,3 @@
 # CelesteCutsceneCreator
-A little Lua/Love2D app made by me to create Celeste/Everest cutscenes more easily.
+
+Great project and all. I should make the ReadMe now but I'm quite lazy
