@@ -71,8 +71,7 @@ menu_NCP_scene:add_child(menu_NCP_pkg_name_input)
 -- Image
 menu_NCP_create_button_image = Image.init()
 menu_NCP_create_button_image:set_image("assets/images/menus/NCP/create_button.png")
-menu_NCP_create_button_image:set_position(0, 720)
-menu_NCP_create_button_image:centerx()
+menu_NCP_create_button_image:set_position(800, 720)
 menu_NCP_scene:add_child(menu_NCP_create_button_image)
 
 -- Button/Detector

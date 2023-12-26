@@ -22,7 +22,7 @@ function love.load()
     dofile("src/ui_loader.lua")
 
     -- DEBUG Testing
-    love.window.setPosition(0, 300, 1)
+    love.window.setPosition(100, 300, 1)
 
 end
 
@@ -68,7 +68,7 @@ end
 -- Drawing
 function love.draw()
     
-    --love.graphics.clear()
+    love.graphics.clear()
 
     -- Scaling
     love.graphics.push()

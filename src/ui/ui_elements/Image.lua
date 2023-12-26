@@ -25,15 +25,6 @@ function Image.set_visibility(self, is_visible)
 end
 
 
-function Image.centerx(self)
-    self.set_position(
-        self,
-        1 / 2 * ( love.graphics.getWidth() - self.width ),
-        self.y
-    )
-end
-
-
 --------------------------
 -- GENERAL METHODS
 --------------------------

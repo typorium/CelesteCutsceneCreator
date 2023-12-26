@@ -23,15 +23,6 @@ function Label.set_font(self, font, font_size)
 end
 
 
-function Label.centerx(self)
-    self.set_position(
-        self,
-        1 / 2 * ( love.graphics.getWidth() - self.text:getWidth() ),
-        self.y
-    )
-end
-
-
 --------------------------
 -- GENERAL METHODS
 --------------------------

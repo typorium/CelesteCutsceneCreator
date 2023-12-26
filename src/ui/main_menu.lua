@@ -15,13 +15,13 @@ menu_main_scene:add_child(menu_main_background)
 -- App title
 menu_main_title = Image.init()
 menu_main_title:set_image("assets/images/menus/main/big_title.png")
-menu_main_title:centerx()
+menu_main_title:set_position(100, 0)
 menu_main_scene:add_child(menu_main_title)
 
 
 -- Buttons : Explanations
 -- Rectangle
-margin = 50
+margin = 10
 menu_main_buttons_explanations = Rectangle.init()
 menu_main_buttons_explanations:set_position(750, 400)
 menu_main_buttons_explanations:set_size(
