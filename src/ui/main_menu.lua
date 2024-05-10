@@ -1,6 +1,7 @@
 --------------------------
 -- MAIN MENU
 --------------------------
+
 -- Frame
 menu_main_scene = Scene.init()
 
@@ -57,6 +58,7 @@ menu_main_NCPbutton_image:set_position(
 )
 
 menu_main_scene:add_child(menu_main_NCPbutton_image)
+
 
 -- Button
 menu_main_NCPbutton_button = Button.init()

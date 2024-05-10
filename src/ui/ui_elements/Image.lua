@@ -25,6 +25,11 @@ function Image.set_visibility(self, is_visible)
 end
 
 
+function Image.set_corner_radius(self, rx, ry)
+    self.rx, self.ry = rx, ry
+end
+
+
 --------------------------
 -- GENERAL METHODS
 --------------------------
@@ -40,7 +45,23 @@ end
 
 function Image.draw(self)
     if self.visible then
+
+        if self.rx > 0 or self.ry > 0 then
+            stencil_drawing = function()
+                love.graphics.rectangle("fill", self.x, self.y, self.width, self.height, self.rx, self.ry)
+            end
+
+            love.graphics.stencil(
+                stencil_drawing,
+                "replace",
+                1
+            )
+            love.graphics.setStencilTest("greater", 0)
+        end
+
         love.graphics.draw(self.image, self.x, self.y)
+
+        love.graphics.setStencilTest()
     end
 end
 
@@ -78,6 +99,9 @@ function Image.init()
     self.width = 0
     self.height = 0
     self.visible = true
+
+    self.rx = 0
+    self.ry = 0
 
     -- Custom Attributes
     self.custom_attributes = {}
