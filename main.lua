@@ -1,28 +1,36 @@
 --------------------------
+-- CONSTANTS
+--------------------------
+
+KEY_LCTRL_ID = "lctrl"
+KEY_V = "v"
+
+INPUT_ACCEPTED_CHARACTERS = "[%a%d_ ]"
+
+
+--------------------------
 -- LOVE CALLBACKS
 --------------------------
 
 -- Loading
 function love.load()
     
-    -- Window configuration
-    init_width, init_height = 1920, 1080
-    current_width, current_height = init_width, init_height
+    -----------GLOBAL----------------- 
+    global_informations = {}
+
+    -- Window scaling informations
+    base_width, base_height = 1920, 1080
+    global_informations.current_scale_x = love.graphics.getWidth() / base_width
+    global_informations.current_scale_y = love.graphics.getHeight() / base_height
+
+    -- Keyboard config
     love.keyboard.setKeyRepeat(true)
 
-    love.window.setMode(init_width, init_height, {resizable=true})
-    love.window.setTitle("Celeste Cutscene Creator")
+    -----------Logic---------------------
+    dofile("src/logic_loader.lua")
 
-    -- Global informations to pass to all elements
-    global_informations = {}
-    global_informations.current_scale_x = current_width / init_width
-    global_informations.current_scale_y = current_height / init_height
-
-    -- UI Loader
+    -----------UI---------------------
     dofile("src/ui_loader.lua")
-
-    -- DEBUG Testing
-    love.window.setPosition(100, 300, 1)
 
 end
 
@@ -31,12 +39,13 @@ end
 function love.quit()
 end
 
+
 -- Resizing
 function love.resize()
     
     -- Changing the scales for graphics / display
-    global_informations.current_scale_x = love.graphics.getWidth() / init_width
-    global_informations.current_scale_y = love.graphics.getHeight() / init_height
+    global_informations.current_scale_x = love.graphics.getWidth() / base_width
+    global_informations.current_scale_y = love.graphics.getHeight() / base_height
 
     -- Update informations
     CCC_SceneManager:resize(global_informations)
@@ -46,18 +55,21 @@ end
 
 -- Mouse button pressed
 function love.mousepressed(x, y, button, istouch, presses)
-    CCC_SceneManager:mousepressed(x, y, button, istouch, presses, global_informations)
-    
     print("mouse click : ( x="..x..", y="..y..")")
+    CCC_SceneManager:mousepressed(x, y, button, istouch, presses, global_informations)
 end
 
 
 -- Text input
 function love.textinput(t)
+    print("Text Input : "..t)
     CCC_SceneManager:textinput(t)
 end
 
+
+-- Inputs
 function love.keypressed(key)
+    print("Key pressed : "..key)
     CCC_SceneManager:keypressed(key)
 end
 
@@ -80,6 +92,7 @@ function love.draw()
     -- Back to defined resolution
     love.graphics.pop()
 end
+
 
 -- Update
 function love.update(dt)

@@ -9,6 +9,7 @@ Textbox = {}
 --------------------------
 function Textbox.set_text(self, text)
     self.text_data = text
+    print(self.text_data)
     self.text:set(self.text_data)
 end
 
@@ -65,6 +66,16 @@ end
 
 function Textbox.get_text(self)
     return self.text_data
+end
+
+
+function Textbox.set_textinput_event(self, event)
+    self.textinput_event = event
+end
+
+
+function Textbox.set_textdelete_event(self, event)
+    self.textdelete_event = event
 end
 
 
@@ -142,12 +153,26 @@ end
 
 
 function Textbox.textinput(self, t)
-    self.text_data = self.text_data..t
-    self:set_text(self.text_data)
+
+    -- Add to text
+    if not string.match( t, INPUT_ACCEPTED_CHARACTERS ) then
+        return
+    end
+    self:set_text(self.text_data..t)
+    self.textinput_event(self)
 end
 
 
 function Textbox.keypressed(self, key)
+
+    -- Checks if CTRL is down (shortcut purposes)
+    if self.has_focus then
+
+        -- CTRL+V : Paste
+        if love.keyboard.isDown(KEY_LCTRL_ID) and key == KEY_V then
+            return
+        end
+    end
 
     -- If has focus and backpress
     if self.has_focus and key == "backspace" then
@@ -160,6 +185,7 @@ function Textbox.keypressed(self, key)
         -- Else, remove last character
         self.text_data = self.text_data:sub(1, -2)
         self:set_text(self.text_data)
+        self.textdelete_event(self)
     end
 
 end
@@ -224,6 +250,10 @@ function Textbox.init()
     self.text_color = {0, 0, 0}
     self.text_data = ""
     self.text = love.graphics.newText(love.graphics.getFont(), {self.text_color, self.text_data})
+
+    -- Events
+    self.textinput_event = function(self) end
+    self.textdelete_event = function(self) end
     
     -- Custom Attributes
     self.custom_attributes = {}

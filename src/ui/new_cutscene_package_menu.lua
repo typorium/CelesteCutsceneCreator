@@ -42,6 +42,16 @@ menu_NCP_pkg_name_PAE_label = Label.init()
 menu_NCP_pkg_name_PAE_label:set_text("")
 menu_NCP_pkg_name_PAE_label:set_font("assets/fonts/renogare_regular.otf", 20)
 menu_NCP_pkg_name_PAE_label:set_position(640, 660)
+menu_NCP_pkg_name_PAE_label:add_custom_attribute("project_exists", false)
+menu_NCP_pkg_name_PAE_label.update = function(self, dt, args)
+
+    text = ""
+    if self:get_custom_attribute("project_exists") then
+        text = { {1, 1, 1}, "A project with this name already exists.\nClicking create ", {1, 0, 0}, "will delete it." }
+    end
+    self:set_text(text)
+
+end
 menu_NCP_scene:add_child(menu_NCP_pkg_name_PAE_label)
 
 
@@ -52,18 +62,18 @@ menu_NCP_pkg_name_input:set_font("assets/fonts/renogare_regular.otf", 40)
 menu_NCP_pkg_name_input:set_position(640, 600)
 menu_NCP_pkg_name_input:set_size(500, 50)
 menu_NCP_pkg_name_input:set_corner_radius(5, 5)
-menu_NCP_pkg_name_input.update = function()
 
-    -- Checks if a projects already exists
-    local file = io.open("projects/"..menu_NCP_pkg_name_input:get_text()..".celestepkg", "r")
-    if file ~= nil then
-        io.close(file)
-        menu_NCP_pkg_name_PAE_label:set_text( {{1, 1, 1}, "A project with this name already exists.\nClicking ", {1, 0, 0}, "create", {1, 1, 1}, " will erase it!"} )
-        return
+menu_NCP_pkg_name_input:set_textinput_event(
+    function(self)
+        menu_NCP_pkg_name_PAE_label:add_custom_attribute("project_exists", project_exists( self:get_text() ) )
     end
-    menu_NCP_pkg_name_PAE_label:set_text("")
+)
+menu_NCP_pkg_name_input:set_textdelete_event(
+    function(self)
+        menu_NCP_pkg_name_PAE_label:add_custom_attribute("project_exists", project_exists( self:get_text() ) )
+    end
+)
 
-end
 menu_NCP_scene:add_child(menu_NCP_pkg_name_input)
 
 
@@ -86,9 +96,8 @@ menu_NCP_create_button_button:set_size(
 )
 menu_NCP_create_button_button:set_event(function()
 
-    --Creates file or 
-    local file = io.open("projects/"..menu_NCP_pkg_name_input:get_text()..".celestepkg", "w")
-    io.close(file)
+    -- Creates project file
+    project_create_file(menu_NCP_pkg_name_input:get_text())
 
     -- Sets new menu active
     CCC_SceneManager:set_active("menu_PKG_master")
